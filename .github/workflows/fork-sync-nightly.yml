@@ -1,4 +1,4 @@
-name: Sync Fork
+name: Sync Fork Nightly
 on:
   push:
   workflow_dispatch:
@@ -6,13 +6,13 @@ on:
     - cron: '0 * * * *'
 
 jobs:
-  sync_fork:
+  sync_fork_nightly:
     runs-on: ubuntu-latest
     steps:
       - uses: tgymnich/fork-sync@v1.8
         with:
-          base: master
-          head: master
+          base: nightly
+          head: nightly
           retries: 1
           retry_after: 10
           ignore_fail: true
