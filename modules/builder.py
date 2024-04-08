@@ -1181,9 +1181,10 @@ class CollectionBuilder:
     def _poster(self, method_name, method_data):
         if method_name == "url_poster":
             try:
-                image_response = self.config.get(method_data, headers=util.header())
-                if image_response.status_code >= 400 or image_response.headers["Content-Type"] not in util.image_content_types:
-                    raise ConnectionError
+                if not method_data.startswith("https://theposterdb.com/api/assets/"):
+                    image_response = self.config.get(method_data, headers=util.header())
+                    if image_response.status_code >= 400 or image_response.headers["Content-Type"] not in util.image_content_types:
+                        raise ConnectionError
                 self.posters[method_name] = method_data
             except ConnectionError:
                 logger.warning(f"{self.Type} Warning: No Poster Found at {method_data}")
@@ -1579,6 +1580,8 @@ class CollectionBuilder:
                         new_dictionary[lower_method] = util.parse(self.Type, search_method, search_data, parent=method_name)
                     elif search_attr == "type":
                         new_dictionary[lower_method] = util.parse(self.Type, search_method, search_data, datatype="lowerlist", parent=method_name, options=imdb.title_type_options)
+                    elif search_attr == "topic":
+                        new_dictionary[lower_method] = util.parse(self.Type, search_method, search_data, datatype="lowerlist", parent=method_name, options=imdb.topic_options)
                     elif search_attr == "release":
                         new_dictionary[lower_method] = util.parse(self.Type, search_method, search_data, datatype="date", parent=method_name, date_return="%Y-%m-%d")
                     elif search_attr == "rating":
@@ -1642,7 +1645,7 @@ class CollectionBuilder:
                                 countries.append(str(country))
                         if countries:
                             new_dictionary[lower_method] = countries
-                    elif search_attr in ["keyword", "language"]:
+                    elif search_attr in ["keyword", "language", "alternate_version", "crazy_credit", "location", "goof", "plot", "quote", "soundtrack", "trivia"]:
                         new_dictionary[lower_method] = util.parse(self.Type, search_method, search_data, datatype="lowerlist", parent=method_name)
                     elif search_attr == "cast":
                         casts = []
