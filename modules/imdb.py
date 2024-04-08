@@ -20,8 +20,11 @@ charts = {
 }
 imdb_search_attributes = [
     "limit", "sort_by", "title", "type", "type.not", "release.after", "release.before", "rating.gte", "rating.lte",
-    "votes.gte", "votes.lte", "genre", "genre.any", "genre.not", "event", "event.winning", "imdb_top", "imdb_bottom",
-    "company", "content_rating", "country", "country.any", "country.not", "country.origin", "keyword", "keyword.any",
+    "votes.gte", "votes.lte", "genre", "genre.any", "genre.not", "topic", "topic.any", "topic.not",
+    "alternate_version", "alternate_version.not", "crazy_credit", "crazy_credit.not", "location", "location.not",
+    "goof", "goof.not", "plot", "plot.not", "quote", "quote.not", "soundtrack", "soundtrack.not",
+    "trivia", "trivia.not", "event", "event.winning", "imdb_top", "imdb_bottom", "company", "content_rating",
+    "country", "country.any", "country.not", "country.origin", "keyword", "keyword.any",
     "keyword.not", "series", "series.not", "list", "list.any", "list.not", "language", "language.any", "language.not",
     "language.primary", "popularity.gte", "popularity.lte", "cast", "cast.any", "cast.not", "runtime.gte",
     "runtime.lte", "adult",
@@ -281,7 +284,7 @@ class IMDb:
                 range_name = [range_name]
             for i, attr in enumerate(bases):
                 attrs = [(f"{attr}.{m}" if m else attr, m, im) for m, im in mods]
-                if any([m in data for m, _ in attrs]):
+                if any([m in data for m, _, _ in attrs]):
                     if constraint not in out:
                         out[constraint] = {}
                     range_data = {}
